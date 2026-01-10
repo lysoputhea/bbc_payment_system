@@ -25,7 +25,9 @@ services:
   db:
     image: mysql:8.0
     env_file: .env
-    environment: { MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}, MYSQL_DATABASE: ${DB_NAME:-school_payment_system} }
+    environment: 
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME:-school_payment_system} 
     volumes: [db_data:/var/lib/mysql]
     ports: ["3306:3306"]  # Internal preferred
     healthcheck: { test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${DB_USER:-root}", "-p${MYSQL_ROOT_PASSWORD}"], interval: 10s, timeout: 5s, retries: 5, start_period: 30s }
