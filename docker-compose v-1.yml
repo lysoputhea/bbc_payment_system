@@ -2,45 +2,49 @@ version: "3.9"
 
 services:
   mysql:
-    image: mysql:8
+    image: mysql:8.0
     container_name: mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: rootpass
-      MYSQL_DATABASE: app_db
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: school_payment_system
       MYSQL_USER: app_user
-      MYSQL_PASSWORD: app_pass
+      MYSQL_PASSWORD: app_pass123$
     volumes:
       - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
     networks:
-      - app_net
+      - app_net  
 
   backend:
-    build: ./backend
-    container_name: backend
+    build: ./bbc_backend
+    container_name: bbc_backend
     restart: always
     environment:
       DB_HOST: mysql
-      DB_USER: app_user
-      DB_PASSWORD: app_pass
-      DB_NAME: app_db
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: school_payment_system
+    # PORT: 3000
     depends_on:
       - mysql
     ports:
       - "3000:3000"
+    # - "3000"  
     networks:
       - app_net
 
   frontend:
-    build: ./frontend
-    container_name: frontend
+    build: ./bbc_frontend
+    container_name: bbc_frontend
     restart: always
-    depends_on:
-      - backend
     ports:
       - "80:80"
+    depends_on:
+      - backend
     networks:
-      - app_net
+      - app_net  
 
 volumes:
   mysql_data:
