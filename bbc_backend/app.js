@@ -5,7 +5,9 @@ const morgan = require("morgan");
 const passport = require("passport");
 // const rateLimit = require("express-rate-limit");
 
-require("dotenv").config();
+require("dotenv").config(); // Loads environment variables from .env file
+
+// require("dotenv").config({ path: "./.env.local" }); // Loads local overrides after default .env
 require("./config/passport")(passport);
 
 const authRoutes = require("./routes/auth");
@@ -43,15 +45,19 @@ const app = express();
 // Middleware
 app.use(helmet());
 
-app.use(
-  cors({
-    origin: ["http://localhost", "http://localhost:80"], // allow frontend
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: [
+//       "http://localhost",
+//       "http://localhost:8080",
+//       "http://backend:3000",
+//     ], // allow frontend
+//     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+//     credentials: true,
+//   })
+// );
 
-// app.use(cors({ origin: "*" }));
+app.use(cors({ origin: "*" }));
 
 app.use(morgan("combined"));
 app.use(express.json());
@@ -70,6 +76,7 @@ app.use("/api/payments", paymentRoutes);
 app.use("/api/invoices", invoiceRoutes);
 app.use("/api/reports", reportRoutes);
 app.use("/api/users", userRoutes);
+app.get("/health", (req, res) => res.status(200).send("OK"));
 
 // 404 handler
 app.use((req, res, next) => {

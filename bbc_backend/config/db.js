@@ -20,7 +20,7 @@ pool
     connection.release();
   })
   .catch((err) => {
-    console.error("Database connection failed:", err);
+    console.error("Database connection failed. Please check configuration.");
     process.exit(1); // Exit the process if the connection fails
   });
 // Export the pool

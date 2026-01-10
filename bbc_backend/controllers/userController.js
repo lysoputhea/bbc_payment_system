@@ -214,59 +214,54 @@ exports.changePassword = async (req, res) => {
   }
 };
 
+// Not yet implemented
 // ✅ Change own password
-exports.changeOwnPassword = async (req, res) => {
-  try {
-    const { currentPassword, newPassword } = req.body;
+// exports.changeOwnPassword = async (req, res) => {
+//   try {
+//     const userId = req.user.user_id;
+//     const { currentPassword, newPassword } = req.body;
 
-    if (!currentPassword || !newPassword || newPassword.length < 6) {
-      return res.status(400).json({
-        status: "error",
-        error: {
-          message: "Current password and new password (min 6 chars) required",
-        },
-      });
-    }
+//     if (!currentPassword || !newPassword) {
+//       return res.status(400).json({
+//         status: "error",
+//         error: {
+//           code: 400,
+//           message: "Current password and new password are required",
+//         },
+//       });
+//     }
 
-    // Verify current password
-    const [user] = await pool.query(
-      "SELECT password FROM users WHERE user_id = ?",
-      [req.user.user_id]
-    );
+//     const [users] = await pool.query("SELECT * FROM Users WHERE user_id = ?", [
+//       userId,
+//     ]);
+//     if (!users.length) {
+//       return res.status(404).json({
+//         status: "error",
+//         error: { code: 404, message: "User not found" },
+//       });
+//     }
 
-    console.log(user);
+//     const user = users[0];
+//     const isMatch = await bcrypt.compare(currentPassword, user.password);
+//     if (!isMatch) {
+//       return res.status(400).json({
+//         status: "error",
+//         error: { code: 400, message: "Current password is incorrect" },
+//       });
+//     }
 
-    if (user.length === 0) {
-      return res.status(404).json({
-        status: "error",
-        error: { message: "User not found" },
-      });
-    }
+//     const hashedPassword = await bcrypt.hash(newPassword, 10);
+//     await pool.query("UPDATE Users SET password = ? WHERE user_id = ?", [
+//       hashedPassword,
+//       userId,
+//     ]);
 
-    const isMatch = await bcrypt.compare(currentPassword, user[0].password);
-    if (!isMatch) {
-      return res.status(401).json({
-        status: "error",
-        error: { message: "Current password is incorrect" },
-      });
-    }
-
-    const hashedNewPassword = await bcrypt.hash(newPassword, 12);
-
-    await pool.query("UPDATE users SET password = ? WHERE user_id = ?", [
-      hashedNewPassword,
-      req.user.user_id,
-    ]);
-
-    res.status(200).json({
-      status: "success",
-      message: "Password changed successfully",
-    });
-  } catch (error) {
-    console.error("Change own password error:", error);
-    res.status(500).json({
-      status: "error",
-      error: { message: "Failed to change password" },
-    });
-  }
-};
+//     res.json({ status: "success", message: "Password updated successfully" });
+//   } catch (error) {
+//     console.error("Change own password error:", error);
+//     res.status(500).json({
+//       status: "error",
+//       error: { code: 500, message: "Failed to change password" },
+//     });
+//   }
+// };
