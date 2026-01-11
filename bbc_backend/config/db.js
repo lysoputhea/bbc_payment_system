@@ -1,4 +1,4 @@
-const mysql = require("mysql2/promise");
+// const mysql = require("mysql2/promise");
 
 // // The configuration now reads from environment variables
 // const dbConfig = {
