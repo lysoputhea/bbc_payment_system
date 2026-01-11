@@ -5,9 +5,12 @@ const morgan = require("morgan");
 const passport = require("passport");
 // const rateLimit = require("express-rate-limit");
 
-require("dotenv").config(); // Loads environment variables from .env file
+// require("dotenv").config(); // Loads environment variables from .env file
 
-// require("dotenv").config({ path: "./.env.local" }); // Loads local overrides after default .env
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+
 require("./config/passport")(passport);
 
 const authRoutes = require("./routes/auth");

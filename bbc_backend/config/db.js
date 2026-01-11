@@ -16,11 +16,11 @@ const pool = mysql.createPool(dbConfig);
 pool
   .getConnection()
   .then((connection) => {
-    console.log("Database connection successful!");
+    console.log("✅ Database connected");
     connection.release();
   })
   .catch((err) => {
-    console.error("Database connection failed. Please check configuration.");
+    console.error("❌ Database connection failed:", err.message);
     process.exit(1); // Exit the process if the connection fails
   });
 // Export the pool
