@@ -22,10 +22,6 @@ pool
   .catch((err) => {
     console.error("❌ Database connection failed:", err.message);
     // process.exit(1); // Exit the process if the connection fails
-  })
-  .finally(() => {
-    // Optional: You can log that the connection test is complete
-    process.exit();
   });
 
 // Export the pool
