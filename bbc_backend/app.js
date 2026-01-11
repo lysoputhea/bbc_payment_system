@@ -47,13 +47,7 @@ app.use(helmet());
 
 // app.use(
 //   cors({
-//     origin: [
-//       "http://localhost",
-//       "http://localhost:8080",
-//       "http://backend:3000",
-//     ], // allow frontend
-//     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-//     credentials: true,
+//     origin: ["https://app.bbckpc.site"], // allow frontend
 //   })
 // );
 
