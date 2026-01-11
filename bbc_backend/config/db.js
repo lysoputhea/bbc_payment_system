@@ -21,7 +21,7 @@ pool
   })
   .catch((err) => {
     console.error("Database connection failed. Please check configuration.");
-    // process.exit(1); // Exit the process if the connection fails
+    process.exit(1); // Exit the process if the connection fails
   });
 // Export the pool
 module.exports = pool;
