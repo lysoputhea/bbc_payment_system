@@ -123,17 +123,18 @@ const app = express();
 /* ======================
    ✅ CORS (MUST BE FIRST)
 ====================== */
-app.use(
-  cors({
-    origin: ["https://web.bbckpc.site"],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: ["https://web.bbckpc.site"],
+//     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+//     allowedHeaders: ["Content-Type", "Authorization"],
+//     credentials: true,
+//   })
+// );
 
 // Enable preflight
-app.options("*", cors());
+// app.options("*", cors());
+app.use(cors({ origin: "*" }));
 
 /* ======================
    Security & Parsers
