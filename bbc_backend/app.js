@@ -27,41 +27,15 @@ const userRoutes = require("./routes/users");
 
 const app = express();
 
-// Rate limiting middleware
-// const limiter = rateLimit({
-//   windowMs: 15 * 60 * 1000, // 15 minutes
-//   max: 100, // Limit each IP to 100 requests per windowMs
-//   message: {
-//     status: "error",
-//     error: {
-//       code: 429,
-//       message: "Too many requests from this IP, please try again later.",
-//     },
-//   },
-//   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-//   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-// });
-
-// Apply rate limiting to all API routes
-// app.use("/api/", limiter);
-
-// Middleware
+// app.use(cors({ origin: "*" }));
 app.use(helmet());
-
-// app.use(
-//   cors({
-//     origin: ["https://app.bbckpc.site"], // allow frontend
-//   })
-// );
-
-app.use(cors({ origin: "*" }));
-
 app.use(morgan("combined"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(passport.initialize());
 
 // Routes
+app.use("/api/", limiter); // Apply rate limiting to all API routes
 app.use("/api/auth", authRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/branches", branchRoutes);
@@ -74,6 +48,13 @@ app.use("/api/invoices", invoiceRoutes);
 app.use("/api/reports", reportRoutes);
 app.use("/api/users", userRoutes);
 app.get("/health", (req, res) => res.status(200).send("OK"));
+
+// Middleware for CORS
+app.use(
+  cors({
+    origin: ["https://web.bbckpc.site"], // allow frontend
+  })
+);
 
 // 404 handler
 app.use((req, res, next) => {
@@ -90,6 +71,21 @@ app.use((err, req, res, next) => {
     status: "error",
     error: { code: 500, message: "Something went wrong!" },
   });
+});
+
+// Rate limiting middleware
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+  message: {
+    status: "error",
+    error: {
+      code: 429,
+      message: "Too many requests from this IP, please try again later.",
+    },
+  },
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 
 const PORT = process.env.PORT || 3000;
