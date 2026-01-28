@@ -55,11 +55,23 @@ app.use(passport.initialize());
 ====================== */
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 100,
+  max: 1000,
   standardHeaders: true,
   legacyHeaders: false,
+  handler: (req, res) => {
+    res.status(429).json({
+      success: false,
+      message: "Too many requests. Please slow down 🚦.",
+    });
+  },
 });
 
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 20,
+});
+
+app.use("/api/auth", authLimiter);
 app.use("/api", limiter);
 
 /* ======================
