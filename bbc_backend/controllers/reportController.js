@@ -168,9 +168,9 @@ exports.getMonthlyStudentPayments = async (req, res) => {
         ANY_VALUE(c.book) as book,
         ANY_VALUE(c.room_number) as room_number,
         DATE_FORMAT(p.payment_date, '%Y-%m') AS month,
-         ANY_VALUE(p.payment_date) AS payment_date,
-        ANY_VALUE(p.issue_date) AS issue_date,
+        ANY_VALUE(p.payment_date) AS payment_date,
         ANY_VALUE(p.due_date) AS due_date,
+        ANY_VALUE(p.issue_date) AS issue_date,
         SUM(p.amount) AS total_amount
       FROM Payments p
       JOIN Branches b ON p.branch_id = b.branch_id
